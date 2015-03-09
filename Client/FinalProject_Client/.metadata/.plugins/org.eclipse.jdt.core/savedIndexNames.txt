@@ -1,0 +1,18 @@
+INDEX VERSION 1.127+C:\Users\Kyle\Documents\EWU\CSCD467\FinalProject_Client\.metadata\.plugins\org.eclipse.jdt.core
+847618560.index
+3097394219.index
+1654984216.index
+358050146.index
+881895235.index
+3176364129.index
+2143716467.index
+844601494.index
+3520661010.index
+290714306.index
+3776425001.index
+2394392208.index
+2448026493.index
+2943430252.index
+248351807.index
+881303192.index
+949515501.index
