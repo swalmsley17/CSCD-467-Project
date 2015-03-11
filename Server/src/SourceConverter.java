@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
@@ -58,7 +57,7 @@ public class SourceConverter
 	public static Callable<String> textToRunnable(String text)
 	{
 		// Extract the name for the source file
-		Pattern p = Pattern.compile("public class (.*?) implements");
+		Pattern p = Pattern.compile("public class (.*?) ");
 		Matcher m = p.matcher(text);
 		String name = "DynSource";
 		if (!m.find())
