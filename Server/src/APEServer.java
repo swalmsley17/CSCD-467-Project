@@ -1,6 +1,7 @@
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Callable;
@@ -32,10 +33,10 @@ public class APEServer implements Runnable {
 				System.out.println(code);
 
 				// Run code dynamically
-				Callable<String> call = SourceConverter.textToRunnable(code);
-				String result = "";
+				Method call = SourceConverter.textToRunnable(code);
+				Object result = "";
 				try {
-					result = call.call();
+					result = call.invoke(null,new String[0]);
 				} catch (Exception e) {
 					result = "";
 					System.out.println("Error running code:");
