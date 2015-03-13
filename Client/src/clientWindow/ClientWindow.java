@@ -107,7 +107,7 @@ public class ClientWindow extends JFrame {
 		codeScrollPane.setBounds(301, 96, 473, 333);
 		contentPane.add(codeScrollPane);
 
-		JTextArea insertCodeTextArea = new JTextArea();
+		final JTextArea insertCodeTextArea = new JTextArea();
 		insertCodeTextArea.setTabSize(3);
 		codeScrollPane.setViewportView(insertCodeTextArea);
 
@@ -119,6 +119,7 @@ public class ClientWindow extends JFrame {
 		JButton submitCodeButton = new JButton("Save & Submit File");
 		submitCodeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				textPostEdit = insertCodeTextArea.getText();
 				saveFile();
 				sendToServer();
 			}
@@ -138,7 +139,7 @@ public class ClientWindow extends JFrame {
 		selectFileScrollPane.setBounds(10, 144, 281, 44);
 		contentPane.add(selectFileScrollPane);
 
-		JTextArea javaFileOpenedTextArea = new JTextArea();
+		final JTextArea javaFileOpenedTextArea = new JTextArea();
 		javaFileOpenedTextArea.setTabSize(3);
 		selectFileScrollPane.setViewportView(javaFileOpenedTextArea);
 
@@ -285,6 +286,7 @@ public class ClientWindow extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return contents;
 	}
 

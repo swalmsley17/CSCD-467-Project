@@ -1,3 +1,5 @@
+package clientWindow;
+
 public class JavaExample{
 	public static void main(String [] args){
 		String message = "";
