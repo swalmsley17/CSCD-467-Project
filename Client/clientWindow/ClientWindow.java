@@ -75,7 +75,7 @@ public class ClientWindow extends JFrame {
 	 */
 	public ClientWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 730, 440);
+		setBounds(100, 100, 800, 500);
 
 		// MENU STUFF
 		JMenuBar menuBar = new JMenuBar();
@@ -104,7 +104,7 @@ public class ClientWindow extends JFrame {
 		JScrollPane codeScrollPane = new JScrollPane();
 		codeScrollPane
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		codeScrollPane.setBounds(301, 96, 403, 273);
+		codeScrollPane.setBounds(301, 96, 473, 333);
 		contentPane.add(codeScrollPane);
 
 		JTextArea insertCodeTextArea = new JTextArea();
@@ -215,7 +215,7 @@ public class ClientWindow extends JFrame {
 		contentPane.add(lblServerIp);
 
 		serverIPTextField = new JTextField();
-		serverIPTextField.setText("localhost");
+		serverIPTextField.setText("127.0.0.1");
 		serverIPTextField.setBounds(301, 36, 171, 20);
 		contentPane.add(serverIPTextField);
 		serverIPTextField.setColumns(10);
@@ -225,7 +225,7 @@ public class ClientWindow extends JFrame {
 		contentPane.add(lblServerPort);
 
 		serverPortTextField = new JTextField();
-		serverPortTextField.setText("9898");
+		serverPortTextField.setText("15001");
 		serverPortTextField.setBounds(482, 36, 86, 20);
 		contentPane.add(serverPortTextField);
 		serverPortTextField.setColumns(10);
@@ -233,13 +233,22 @@ public class ClientWindow extends JFrame {
 		JScrollPane serverMessagesScrollPane = new JScrollPane();
 		serverMessagesScrollPane
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		serverMessagesScrollPane.setBounds(10, 224, 281, 145);
+		serverMessagesScrollPane.setBounds(10, 224, 281, 164);
 		contentPane.add(serverMessagesScrollPane);
 
 		serverMessagesTextArea = new JTextArea();
 		serverMessagesTextArea.setEditable(false);
 		serverMessagesTextArea.setTabSize(3);
 		serverMessagesScrollPane.setViewportView(serverMessagesTextArea);
+
+		JButton btnClearServerMessages = new JButton("Clear Server Messages...");
+		btnClearServerMessages.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				serverMessagesTextArea.setText("");
+			}
+		});
+		btnClearServerMessages.setBounds(10, 399, 171, 30);
+		contentPane.add(btnClearServerMessages);
 	}
 
 	/***********************************************************************************************************************/
@@ -305,7 +314,7 @@ public class ClientWindow extends JFrame {
 	private void sendToServer() {
 		client = new Client();
 		client.connectToServer(serverIPTextField.getText(),
-				serverPortTextField.getText(), selectedFile, this);
+				serverPortTextField.getText(), parseFile(selectedFile), this);
 	}
 
 	// SET SERVER MESSAGE BOX
