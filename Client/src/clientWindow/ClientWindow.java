@@ -115,18 +115,6 @@ public class ClientWindow extends JFrame {
 		insertCodeHereLabel.setBounds(301, 71, 132, 14);
 		contentPane.add(insertCodeHereLabel);
 
-		// SAVE AND SUBMIT BUTTON
-		JButton submitCodeButton = new JButton("Save & Submit File");
-		submitCodeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				textPostEdit = insertCodeTextArea.getText();
-				saveFile();
-				sendToServer();
-			}
-		});
-		submitCodeButton.setBounds(10, 74, 171, 37);
-		contentPane.add(submitCodeButton);
-
 		JLabel serverMessagesLabel = new JLabel("Server Messages:");
 		serverMessagesLabel.setBounds(10, 199, 171, 14);
 		contentPane.add(serverMessagesLabel);
@@ -140,19 +128,49 @@ public class ClientWindow extends JFrame {
 		contentPane.add(selectFileScrollPane);
 
 		final JTextArea javaFileOpenedTextArea = new JTextArea();
+		javaFileOpenedTextArea.setEditable(false);
 		javaFileOpenedTextArea.setTabSize(3);
 		selectFileScrollPane.setViewportView(javaFileOpenedTextArea);
 
-		// OPEN FILE BUTTON
-		// reference:http://www.codejava.net/java-se/swing/show-simple-open-file-dialog-using-jfilechooser
-		JButton openFileButton = new JButton("Open Java File");
-		openFileButton.addActionListener(new ActionListener() {
+		// SAVE BUTTON
+		JButton saveButton = new JButton("Save Selected File");
+		saveButton.setEnabled(false);
+		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selectedFile = openFile();
-				javaFileOpenedTextArea.append(selectedFile.getAbsolutePath());
-				insertCodeTextArea.setText("");
-				textPreEdit = parseFile(selectedFile);
-				insertCodeTextArea.append(textPreEdit);
+				textPostEdit = insertCodeTextArea.getText();
+				saveFile();
+			}
+		});
+		saveButton.setBounds(65, 40, 171, 23);
+		contentPane.add(saveButton);
+
+		// SAVE AND SUBMIT BUTTON
+		JButton submitCodeButton = new JButton("Save & Submit File");
+		submitCodeButton.setEnabled(false);
+		submitCodeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textPostEdit = insertCodeTextArea.getText();
+				saveFile();
+				sendToServer();
+			}
+		});
+		submitCodeButton.setBounds(65, 74, 171, 37);
+		contentPane.add(submitCodeButton);
+
+		JMenuItem mntmSave = new JMenuItem("Save...");
+		mntmSave.setEnabled(false);
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textPostEdit = insertCodeTextArea.getText();
+				saveFile();
+			}
+		});
+
+		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
+		mntmSaveAs.setEnabled(false);
+		mntmSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveFileAs();
 			}
 		});
 
@@ -164,26 +182,12 @@ public class ClientWindow extends JFrame {
 				insertCodeTextArea.setText("");
 				textPreEdit = parseFile(selectedFile);
 				insertCodeTextArea.append(textPreEdit);
+				mntmSave.setEnabled(true);
+				mntmSaveAs.setEnabled(true);
+				saveButton.setEnabled(true);
+				submitCodeButton.setEnabled(true);
 			}
 		});
-		mnFile.add(mntmOpen);
-
-		JMenuItem mntmSave = new JMenuItem("Save...");
-		mntmSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textPostEdit = insertCodeTextArea.getText();
-				saveFile();
-			}
-		});
-		mnFile.add(mntmSave);
-
-		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
-		mntmSaveAs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveFileAs();
-			}
-		});
-		mnFile.add(mntmSaveAs);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
@@ -191,21 +195,31 @@ public class ClientWindow extends JFrame {
 				System.exit(0);
 			}
 		});
+
+		mnFile.add(mntmOpen);
+		mnFile.add(mntmSave);
+		mnFile.add(mntmSaveAs);
 		mnFile.add(mntmExit);
 
-		openFileButton.setBounds(10, 11, 171, 23);
-		contentPane.add(openFileButton);
-
-		// SAVE BUTTON
-		JButton saveButton = new JButton("Save Selected File");
-		saveButton.addActionListener(new ActionListener() {
+		// OPEN FILE BUTTON
+		// reference:http://www.codejava.net/java-se/swing/show-simple-open-file-dialog-using-jfilechooser
+		JButton openFileButton = new JButton("Open Java File");
+		openFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textPostEdit = insertCodeTextArea.getText();
-				saveFile();
+				selectedFile = openFile();
+				javaFileOpenedTextArea.append(selectedFile.getAbsolutePath());
+				insertCodeTextArea.setText("");
+				textPreEdit = parseFile(selectedFile);
+				insertCodeTextArea.append(textPreEdit);
+				saveButton.setEnabled(true);
+				submitCodeButton.setEnabled(true);
+				mntmSave.setEnabled(true);
+				mntmSaveAs.setEnabled(true);
 			}
 		});
-		saveButton.setBounds(10, 40, 171, 23);
-		contentPane.add(saveButton);
+
+		openFileButton.setBounds(65, 11, 171, 23);
+		contentPane.add(openFileButton);
 
 		JLabel lblSelectedFile = new JLabel("Selected File:");
 		lblSelectedFile.setBounds(10, 122, 171, 14);
@@ -248,7 +262,7 @@ public class ClientWindow extends JFrame {
 				serverMessagesTextArea.setText("");
 			}
 		});
-		btnClearServerMessages.setBounds(10, 399, 171, 30);
+		btnClearServerMessages.setBounds(10, 399, 281, 30);
 		contentPane.add(btnClearServerMessages);
 	}
 
