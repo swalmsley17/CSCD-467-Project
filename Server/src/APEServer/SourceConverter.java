@@ -24,6 +24,8 @@ public class SourceConverter {
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
+		
+		cleanup(directory);
 
 		// Create .java file for compilation
 		File dotjava = new File(directory.getPath() + "/" + name + ".java");
@@ -72,8 +74,6 @@ public class SourceConverter {
 
 		// Compare outputs
 		compareOutputFiles(output, name);
-		// cleanup for next Thread
-		cleanup(directory);
 	}
 
 	public static String getName(String code) throws APEException {
@@ -118,6 +118,8 @@ public class SourceConverter {
 	}
 
 	public static void cleanup(File directory) {
+		if(!directory.exists())
+			return;
 		File[] files = directory.listFiles();
 		if (files != null) {
 			for (File f : files) {

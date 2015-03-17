@@ -44,6 +44,7 @@ public class APEServer implements Runnable {
 				} catch (InterruptedException e) {
 					result = "Wow, Something REALLY BAD JUST HAPPENED";
 				}
+				
 				// Send Response back to client
 				DataOutputStream os = new DataOutputStream(
 						new_connection.getOutputStream());
