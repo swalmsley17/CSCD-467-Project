@@ -11,12 +11,12 @@ public class ServerTester {
 	final static String server_address = "127.0.0.1";
 
 	// standard hello world main
-	final static String test_one = "import java.io.File;\nimport java.io.FileNotFoundException;\nimport java.io.PrintWriter;\nimport java.util.Scanner;\n\n\n\npublic class TestOne {\n\u0009public static void main(String[] args) throws FileNotFoundException {\n\u0009\u0009PrintWriter fout = new PrintWriter(new File(\"TestOneoutput.txt\"));\n\u0009\u0009fout.println(\"Hello World!\");\n\u0009\u0009fout.close();\n\u0009}\n}\n";
+	final static String test_one = "\npublic class TestOne {\n\u0009public static void main(String[] args) {\n\u0009\u0009System.out.println(\"Hello World!\");\n\u0009}\n}\n";
 
 	// calls other methods in class
-	final static String test_two = "import java.io.File;\nimport java.io.FileNotFoundException;\nimport java.io.PrintWriter;\n\n\npublic class TestTwo {\n\n\u0009public static void main(String[] args) throws FileNotFoundException {\n\u0009\u0009PrintWriter fout = new PrintWriter(new File(\"TestTwo_output.txt\"));\n\u0009\u0009methodOne(\"this_is_method_one\",fout);\n\u0009\u0009fout.close();\n\u0009}\n\u0009\n\u0009private static void methodOne(String message, PrintWriter fout) {\n\u0009\u0009fout.println(message);\n\u0009\u0009methodTwo(\"this_is_method_two\",fout);\n\u0009}\n\u0009private static void methodTwo(String message, PrintWriter fout) {\n\u0009\u0009fout.println(message);\n\u0009}\n\n}\n";
+	final static String test_two = "\npublic class TestTwo {\n\n\u0009public static void main(String[] args) {\n\u0009\u0009methodOne(\"this_is_method_one\");\n\u0009}\n\n\u0009private static void methodOne(String message) {\n\u0009\u0009System.out.println(message);\n\u0009\u0009methodTwo(\"this_is_method_two\");\n\u0009}\n\n\u0009private static void methodTwo(String message) {\n\u0009\u0009System.out.println(message);\n\u0009}\n\n}\n";
 
-	final static String bad_output = "import java.io.File;\nimport java.io.FileNotFoundException;\nimport java.io.PrintWriter;\n\n\n\npublic class BadOutput {\n\u0009public static void main(String[] args) throws FileNotFoundException {\n\u0009\u0009PrintWriter fout = new PrintWriter(new File(\"TestOneoutput.txt\"));\n\u0009\u0009fout.println(\"Hello World?\");\n\u0009\u0009fout.close();\n\u0009}\n}\n";
+	final static String bad_output = "public class BadOutput {\n\u0009public static void main(String[] args) {\n\u0009\u0009System.out.println(\"Hello World?\");\n\u0009}\n}\n";
 	final static String compile_error = "public class CompileErrur {\nperblic stotic vod meen(Sting(] blargs) {\n]\n}";
 	final static String runtime_error = "";
 	final static String hanging_program = "";

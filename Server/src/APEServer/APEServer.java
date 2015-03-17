@@ -33,24 +33,16 @@ public class APEServer implements Runnable {
 				// Run code dynamically
 
 				String result = null;
-				Method[] methods = null;
+				String name = null;
 				try {
-					methods = SourceConverter.textToRunnable(code);
+					name = SourceConverter.getName(code);
+					SourceConverter.compileAndRun(code,name);
+					result = "Compiled, Ran, and Output Matched Successfully";
 				} catch (APEException e) {
 					System.out.println(e.getMessage());
 					result = e.getMessage();
-				}
-				if (result == null) {
-					try {
-						if (methods[0].getName().equals("main"))
-							methods[0].invoke(null, (Object) new String[0]);
-						result = APEClassTester.compareOutputFiles(methods[0]
-								.getDeclaringClass().getName());
-					} catch (Exception e) {
-						result = "";
-						System.out.println("Error running code:");
-						result = e.getMessage();
-					}
+				} catch (InterruptedException e) {
+					result = "Wow, Something REALLY BAD JUST HAPPENED";
 				}
 				// Send Response back to client
 				DataOutputStream os = new DataOutputStream(
