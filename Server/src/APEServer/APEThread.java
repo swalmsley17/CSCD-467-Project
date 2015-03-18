@@ -1,31 +1,32 @@
 package APEServer;
 
 import java.io.IOException;
-import java.util.Random;
 
 public class APEThread extends Thread {
 
 	private APEThreadMonitor monitor;
-	
 	public APEThread(APEThreadMonitor monitor) {
 		this.monitor = monitor;
 	}
 	
 	public void run() {
 		APEJob job = null;
-		while (true) {
+		while (!Thread.interrupted()) {
 				String result = null;
 				try {
 					job = this.monitor.getJob();
+					if(job == null)
+						throw new InterruptedException();
+					this.monitor.setLock(job.name);
 					this.monitor.doWork(job.name, job.code);
 					result = "Compiled, Ran, and Output Matched Successfully";
 				} catch (APEException e) {
 					System.out.println(e.getMessage());
 					result = e.getMessage();
-				} catch (InterruptedException e) {
-					result = "Wow, Something REALLY BAD JUST HAPPENED";
 				} catch (IOException e) {
 					result = "FILE I/O EXCEPTION";
+				} catch (InterruptedException e) {
+					return;
 				}
 				try {
 					job.sendResult(result);
@@ -34,10 +35,5 @@ public class APEThread extends Thread {
 					e.printStackTrace();
 				}
 		}
-	}
-	
-	private static int doOp() {
-
-		return 0;
 	}
 }

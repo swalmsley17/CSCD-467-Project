@@ -19,7 +19,7 @@ public class APEJob {
 		DataInputStream is = new DataInputStream(sock.getInputStream());
 		byte[] buffer = new byte[is.readInt()];
 		is.read(buffer);
-		String code = new String(buffer);
+		this.code = new String(buffer);
 		System.out.println("Received code:");
 		System.out.println(code);
 		this.name = SourceConverter.getName(code);

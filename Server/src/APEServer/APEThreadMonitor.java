@@ -20,9 +20,13 @@ public class APEThreadMonitor {
 		this.notifyAll();
 	}
 	
-	public synchronized APEJob getJob() throws InterruptedException {
+	public synchronized APEJob getJob()  {
 		while (this.jobqueue.size() == 0)
-			this.wait();
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				return null;
+			}
 		return this.jobqueue.poll();
 	}
 	
@@ -52,7 +56,7 @@ public class APEThreadMonitor {
 		return -1;
 	}
 
-	public void doWork(String name, String code) throws APEException, IOException, InterruptedException {
+	public void doWork(String name, String code) throws APEException, IOException{
 		int index = getLockIndex(name);
 		if(index == -1)
 			throw new APEException("Locking Error");

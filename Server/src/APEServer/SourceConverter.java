@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +19,7 @@ public class SourceConverter {
 	final static String OUTPUT_ADDENDUM = "_output.txt";
 
 	public static void compileAndRun(String code, String name)
-			throws IOException, APEException, InterruptedException {
+			throws IOException, APEException {
 
 		File directory = new File(name);
 		if (!directory.exists()) {
@@ -36,7 +37,10 @@ public class SourceConverter {
 		// Compile .java file
 		Process comp_proc = Runtime.getRuntime().exec(
 				COMPILE_COMMAND + dotjava.getPath());
-		Thread.sleep(3000);
+		try {
+			comp_proc.waitFor();
+		} catch (InterruptedException e) {
+		}
 		if (comp_proc.isAlive())
 			throw new APEException("Compiling taking too long");
 		if (comp_proc.exitValue() != 0) {
@@ -51,7 +55,10 @@ public class SourceConverter {
 				run_proc.getInputStream()));
 		File output = new File(directory.getPath() + "/" + name
 				+ OUTPUT_ADDENDUM);
-		Thread.sleep(3000);
+		try {
+			run_proc.waitFor(3000, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+		}
 		if (run_proc.isAlive()) {
 			run_proc.destroy();
 			throw new APEException("Runtime is taking too long");

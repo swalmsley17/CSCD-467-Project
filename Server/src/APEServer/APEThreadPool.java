@@ -1,27 +1,18 @@
 package APEServer;
+
 import java.io.IOException;
 
 public class APEThreadPool implements Runnable {
 	private int maxCapacity;
 	private APEThread[] holders;
 
-	private int v, t1, t2, t3, starting_threads;
+	private int starting_threads;
 
 	APEThreadMonitor jobQueue;
 
 	public APEThreadPool(APEThreadMonitor monitor) {
 		this.jobQueue = monitor;
-
-		// CHANGE VALUES BASED ON TEST
-		this.maxCapacity = 50;
-		
-		//MILLISECONDS
-		this.v = 1;
-		
-		this.t1 = 1;
-		this.t2 = 10;
-		this.t3 = 20;
-		this.starting_threads = 5;
+		this.starting_threads = 20;
 	}
 
 	public void startPool() {
@@ -30,34 +21,6 @@ public class APEThreadPool implements Runnable {
 			this.holders[i] = new APEThread(this.jobQueue);
 			this.holders[i].start();
 		}
-	}
-
-	public void increaseThreadsInPool() {
-		APEThread[] new_holders = new APEThread[this.holders.length * 2];
-
-		int i = 0;
-		for (; i < this.holders.length; i++)
-			new_holders[i] = this.holders[i];
-		for (; i < new_holders.length; i++) {
-			new_holders[i] = new APEThread(this.jobQueue);
-			new_holders[i].start();
-		}
-		
-		System.out.println("THREAD POOL INCREASED FROM " + this.holders.length + " TO " + new_holders.length);
-		this.holders = new_holders;
-	}
-
-	public void decreaseThreadsInPool() {
-		APEThread[] new_holders = new APEThread[this.holders.length / 2];
-
-		int i = 0;
-		for (; i < new_holders.length; i++)
-			new_holders[i] = this.holders[i];
-		for (; i < this.holders.length; i++)
-			this.holders[i].interrupt();
-		
-		System.out.println("THREAD POOL DECREASED FROM " + this.holders.length + " TO " + new_holders.length);
-		this.holders = new_holders;
 	}
 
 	public void stopPool() throws IOException {
@@ -86,54 +49,9 @@ public class APEThreadPool implements Runnable {
 
 	@Override
 	public void run() {
-		boolean t1_triggered = false;
-		boolean t2_triggered = false;
-		boolean t3_triggered = false;
-		while (true) {
-			int job_count = this.jobQueue.getSize();
-			if (job_count > this.t1 && job_count <= this.t2) {
-				if (!t1_triggered) {
-					t1_triggered = true;
-					this.increaseThreadsInPool();
-				}
-				if (t2_triggered) {
-					t2_triggered = false;
-					this.decreaseThreadsInPool();
-				}
-				if (t3_triggered) {
-					t3_triggered = false;
-					this.decreaseThreadsInPool();
-				}
-			} else if (job_count > this.t2 && job_count <= this.t3) {
-				if (!t1_triggered) {
-					t1_triggered = true;
-					this.increaseThreadsInPool();
-				}
-				if (!t2_triggered) {
-					t2_triggered = true;
-					this.increaseThreadsInPool();
-				}
-				if (t3_triggered) {
-					t3_triggered = false;
-					this.decreaseThreadsInPool();
-				}
-			} else if (job_count > this.t3) {
-				if (!t1_triggered) {
-					t1_triggered = true;
-					this.increaseThreadsInPool();
-				}
-				if (!t2_triggered) {
-					t2_triggered = true;
-					this.increaseThreadsInPool();
-				}
-				if (!t3_triggered) {
-					t3_triggered = true;
-					this.increaseThreadsInPool();
-				}
-			}
-
+		while(!Thread.interrupted())
 			try {
-				Thread.sleep(this.v);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				try {
 					this.stopPool();
@@ -141,8 +59,6 @@ public class APEThreadPool implements Runnable {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				return;
 			}
-		}
 	}
 }
