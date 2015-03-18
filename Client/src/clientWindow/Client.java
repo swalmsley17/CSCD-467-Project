@@ -45,6 +45,8 @@ public class Client {
 			byte[] buffer = new byte[in.readInt()];
 			in.read(buffer);
 			clientWindow.receiveServerMessage(new String(buffer));
+         in.close();
+			out.close();
 			socket.close();
 			
 			//let the user know the connection has been closed

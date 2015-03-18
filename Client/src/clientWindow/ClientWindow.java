@@ -90,7 +90,7 @@ public class ClientWindow extends JFrame {
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "About");
+				JOptionPane.showMessageDialog(null, "CSCD 467 APE Project, Kyle Phillips and Stephen Walmsley");
 			}
 		});
 		mnHelp.add(mntmAbout);
@@ -137,6 +137,8 @@ public class ClientWindow extends JFrame {
 		saveButton.setEnabled(false);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+            if (textPostEdit == null)
+   					textPostEdit = "";
 				textPostEdit = insertCodeTextArea.getText();
 				saveFile();
 			}
@@ -150,6 +152,8 @@ public class ClientWindow extends JFrame {
 		submitCodeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textPostEdit = insertCodeTextArea.getText();
+            if (textPostEdit == null)
+					textPostEdit = "";
 				saveFile();
 				sendToServer();
 			}
@@ -161,6 +165,8 @@ public class ClientWindow extends JFrame {
 		mntmSave.setEnabled(false);
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+            if (textPostEdit == null)
+   					textPostEdit = "";
 				textPostEdit = insertCodeTextArea.getText();
 				saveFile();
 			}
@@ -170,6 +176,8 @@ public class ClientWindow extends JFrame {
 		mntmSaveAs.setEnabled(false);
 		mntmSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+            if (textPostEdit == null)
+   					textPostEdit = "";
 				saveFileAs();
 			}
 		});
@@ -306,31 +314,37 @@ public class ClientWindow extends JFrame {
 
 	// SAVE FILE METHOD
 	private void saveFile() {
-		int compareVal = textPreEdit.compareTo(textPostEdit);
-		if (compareVal != 0) {
-			BufferedWriter out;
-			try {
-				out = new BufferedWriter(new FileWriter(selectedFile));
-				out.write(textPostEdit);
-				out.close();
-				JOptionPane.showMessageDialog(null, "File Saved");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+		if (selectedFile != null) {
+			int compareVal = textPreEdit.compareTo(textPostEdit);
+			if (compareVal != 0) {
+				BufferedWriter out;
+				try {
+					out = new BufferedWriter(new FileWriter(selectedFile));
+					out.write(textPostEdit);
+					out.close();
+					JOptionPane.showMessageDialog(null, "File Saved");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
-		}
-	}
+		}	}
 
 	private void saveFileAs() {
-		JFileChooser fileChooser = new JFileChooser();
-		int result = fileChooser.showSaveDialog(this);
+		if (selectedFile != null) {
+			JFileChooser fileChooser = new JFileChooser();
+			int result = fileChooser.showSaveDialog(this);
+		}
 	}
 
 	// SEND SELECTED FILE METHOD
 	private void sendToServer() {
-		client = new Client();
-		client.connectToServer(serverIPTextField.getText(),
-				serverPortTextField.getText(), parseFile(selectedFile), this);
+		if (selectedFile != null) {
+			client = new Client();
+			client.connectToServer(serverIPTextField.getText(),
+					serverPortTextField.getText(), parseFile(selectedFile),
+					this);
+		}
 	}
 
 	// SET SERVER MESSAGE BOX
